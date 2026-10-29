@@ -18,11 +18,24 @@ IW7-Mod is a client for Call of Duty®: Infinite Warfare that adds dedicated ser
 
 IW7D is a fork of [IW7-Mod](https://github.com/auroramod/iw7-mod). On top of upstream it adds:
 
-- **Custom Maps menu** - a `CUSTOM MAPS` button on the lobby screen and in the lobby's Game Setup screen, under `MAPS`. In the zombies lobby it is a clickable `CUSTOM MAPS` entry in the bottom button bar (also bound to the `button_alt2` key). The menu lists every map installed in `usermaps/<name>/<name>.ff` for the current mode, plus a `TEST MAP` entry for zombies. `TEST MAP` is only an alias: it starts the stock `cp_town` map until a real map is installed in `usermaps/cp_testmap/`. Selecting a map starts it with the `map` command. Add an optional `usermaps/<name>/desc.txt` for the description shown next to the list.
+- **Custom Maps menu** - a `CUSTOM MAPS` button on the lobby screen and in the lobby's Game Setup screen, under `MAPS`. In the zombies lobby it is a clickable `CUSTOM MAPS` entry in the bottom button bar (also bound to the `button_alt2` key). The menu lists every map installed in `usermaps/<name>/<name>.ff` for the current mode, plus a `TEST MAP` entry for zombies. `TEST MAP` is only an alias: it starts the stock `cp_town` map, with a small showroom of rotating props placed in front of your spawn by `custom_scripts/cp/testmap.gsc`, until a real map is installed in `usermaps/cp_testmap/`. Selecting a map starts it with the `map` command. Add an optional `usermaps/<name>/desc.txt` for the description shown next to the list.
 - **IW7D branding** in the in-game text, console and window titles.
 - **The updater is opt-in.** The official update server only serves stock IW7-Mod and would overwrite the IW7D scripts, so nothing is downloaded unless you start the game with `-update`.
 
 Because the updater is off, copy the contents of `data\cdata` into `%LOCALAPPDATA%\auroramod\iw7-mod\cdata` after pulling changes (this is what the updater normally does).
+
+### Custom maps
+
+IW7 has no map editor, so a custom map is built from dumped stock assets with [x64 ZoneTool](https://github.com/Joelrau/x64-zt) (its `gfx_world_tr::init` needs the reference fix from this fork's history to build maps in reference mode). `tools/testmap/make_testmap.py` builds `cp_testmap`, the `cp_town` world under a new name with extra props, and documents the whole pipeline:
+
+1. `zonetool.exe -dumpzone cp_town` and `-dumpzone patch_cp_town` in the game folder.
+2. Run the game once with `+set iw7d_dumptables 1 +map cp_town` and, from the `-syscon` console, `stringTableDump` to get every table a running match loads (the zombie scripts look up `<map>_loot.csv`, `<map>_playercash_images.csv` and others by map name).
+3. `make_testmap.py <cp_town dump> <game dir> <patch_cp_town dump> <table dump>` writes `zonetool/cp_testmap`, `zone_source/cp_testmap.csv` and `usermaps/cp_testmap/`.
+4. `zonetool.exe -buildzone cp_testmap`, then move `cp_testmap.ff` into `usermaps/cp_testmap/`.
+
+The built zone only carries the renamed world assets (gfx/col/com/fx/glass map, entities, navmesh, AI paths), the map-named tables and the level script; everything else is a reference. `usermaps/<map>/<map>.base` lists the stock zones the client loads right before the map zone so those references resolve. The engine loads a zone's `eng_` and `patch_` companions by itself, so only `cp_town` goes in that file.
+
+Dev commands `gscDump`, `luaDump`, `stringTableDump`, `localizeDump`, `commandDump` and `entityDump` are available in every build (upstream has them in debug builds only); they write to `iw7-mod/dump/`.
 
 ## Download
 

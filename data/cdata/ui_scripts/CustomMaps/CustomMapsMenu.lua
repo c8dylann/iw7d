@@ -7,7 +7,7 @@ local aliasMaps = {
         ref = "cp_testmap",
         name = "TEST MAP",
         alias = "cp_town",
-        desc = "Test entry, not a real custom map. It starts the stock cp_town map so the menu can be tested. Install a map in usermaps/cp_testmap/ (cp_testmap.ff and cp_testmap.arena) to replace it."
+        desc = "Test entry, not a real custom map. It starts the stock cp_town map with a small showroom of rotating props placed in front of your spawn. Install a map in usermaps/cp_testmap/ (cp_testmap.ff and cp_testmap.arena) to replace it."
     }
 }
 
@@ -20,6 +20,18 @@ local function isInstalled(ref)
 end
 
 local function prettifyName(ref)
+    -- prefer the longname from the map's arena file
+    local arena = "usermaps/" .. ref .. "/" .. ref .. ".arena"
+    if io.fileexists(arena) then
+        local longname = io.readfile(arena):match('longname%s+"([^"]+)"')
+        if longname and longname ~= "" then
+            if longname:match("^[%u%d_]+$") then
+                longname = Engine.Localize(longname)
+            end
+            return ToUpperCase(longname)
+        end
+    end
+
     local name = ref:gsub("^%a%a_", ""):gsub("_", " ")
     return ToUpperCase(name)
 end
@@ -98,6 +110,8 @@ local function startMap(menuElement, map)
         return
     end
 
+    -- custom_scripts/cp/testmap.gsc builds the props when this is set, then clears it again
+    Engine.Exec("set iw7d_testmap " .. (map.alias and "1" or "0"))
     Engine.Exec("map " .. target)
 end
 

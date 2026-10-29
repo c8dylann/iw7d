@@ -56,8 +56,54 @@ namespace fastfiles
 			return db_init_load_x_file_hook.invoke<void>(name, offset);
 		}
 
+		std::vector<std::string> get_usermap_base_zones(const std::string& usermap)
+		{
+			std::vector<std::string> zones;
+
+			std::string data;
+			if (!utils::io::read_file(utils::string::va("usermaps\\%s\\%s.base", usermap.data(), usermap.data()), &data))
+			{
+				return zones;
+			}
+
+			for (auto line : utils::string::split(data, '\n'))
+			{
+				while (!line.empty() && (line.back() == '\r' || line.back() == ' ' || line.back() == '\t'))
+				{
+					line.pop_back();
+				}
+
+				if (!line.empty() && !line.starts_with("//"))
+				{
+					zones.push_back(line);
+				}
+			}
+
+			return zones;
+		}
+
 		void db_load_x_zone_stub(const char* parent_name, const unsigned int zone_flags, const bool is_base_map, const int failure_mode)
 		{
+			// A usermap can list stock zones in usermaps/<map>/<map>.base. They are loaded right before
+			// the map zone, so the map zone can reference their assets instead of carrying copies.
+			const auto usermap = fastfiles::get_current_usermap();
+			if (usermap.has_value() && usermap.value() == parent_name)
+			{
+				static std::deque<std::string> base_zone_names; // the engine may keep the name pointer
+				for (const auto& base : get_usermap_base_zones(usermap.value()))
+				{
+					if (!fastfiles::exists(base, true))
+					{
+						console::error("Base zone %s for usermap %s not found\n", base.data(), parent_name);
+						continue;
+					}
+
+					base_zone_names.push_back(base);
+					console::info("Loading base zone %s for usermap %s\n", base.data(), parent_name);
+					db_load_x_zone_hook.invoke<void>(base_zone_names.back().data(), zone_flags, is_base_map, failure_mode);
+				}
+			}
+
 			console::info("Loading zone %s\n", parent_name);
 			return db_load_x_zone_hook.invoke<void>(parent_name, zone_flags, is_base_map, failure_mode);
 		}

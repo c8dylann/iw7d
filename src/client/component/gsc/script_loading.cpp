@@ -453,6 +453,13 @@ namespace gsc
 			return script;
 		}
 
+		// stock maps request a few scripts that no zone provides (for example
+		// scripts/cp/agents/gametype_zombie), so this is informational only
+		if (!game::DB_XAssetExists(type, name))
+		{
+			console::debug("Script '%s' (%s) not found\n", name, real_name.data());
+		}
+
 		return game::DB_FindXAssetHeader(type, name, allow_create_default).scriptfile;
 	}
 

@@ -1,6 +1,7 @@
 #include <std_include.hpp>
 
-#ifdef _DEBUG
+// IW7D: the dump commands (gscDump, luaDump, stringTableDump, localizeDump, commandDump,
+// entityDump) are available in every build; upstream only had them in debug builds.
 #include "loader/component_loader.hpp"
 #include "game/game.hpp"
 #include "command.hpp"
@@ -330,4 +331,3 @@ namespace dump
 }
 
 REGISTER_COMPONENT(dump::component)
-#endif
