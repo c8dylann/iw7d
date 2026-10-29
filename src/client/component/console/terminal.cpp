@@ -354,7 +354,7 @@ namespace terminal
 		void post_unpack() override
 		{
 			ShowWindow(GetConsoleWindow(), SW_SHOW);
-			SetConsoleTitle("IW7-Mod: " VERSION);
+			SetConsoleTitle("IW7D: " VERSION);
 
 			con.kill_event = CreateEvent(NULL, TRUE, FALSE, NULL);
 

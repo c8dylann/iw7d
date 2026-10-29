@@ -40,12 +40,12 @@ namespace branding
 				return;
 			}
 
-			localized_strings::override("LUA_MENU_LEGAL_COPYRIGHT", "IW7-MOD");
-			localized_strings::override("LUA_MENU_MP_DAILY_LOGIN_MESSAGE", "Thank you for playing IW7-Mod!\nLog in every day to receive better and better rewards.");
+			localized_strings::override("LUA_MENU_LEGAL_COPYRIGHT", "IW7D");
+			localized_strings::override("LUA_MENU_MP_DAILY_LOGIN_MESSAGE", "Thank you for playing IW7D!\nLog in every day to receive better and better rewards.");
 
-			//localized_strings::override("MENU_SP_CAMPAIGN", "IW7-MOD: CAMPAIGN");
-			//localized_strings::override("LUA_MENU_MULTIPLAYER_CAPS", "IW7-MOD: MULTIPLAYER");
-			//localized_strings::override("LUA_MENU_ALIENS_CAPS", "IW7-MOD: ZOMBIES");
+			//localized_strings::override("MENU_SP_CAMPAIGN", "IW7D: CAMPAIGN");
+			//localized_strings::override("LUA_MENU_MULTIPLAYER_CAPS", "IW7D: MULTIPLAYER");
+			//localized_strings::override("LUA_MENU_ALIENS_CAPS", "IW7D: ZOMBIES");
 
 			scheduler::once([]()
 			{
@@ -80,7 +80,7 @@ namespace branding
 					if (!font) return;
 
 					static float text_color[4] = { 0.860f, 0.459f, 0.925f, 0.400f };
-					game::R_AddCmdDrawText("iw7-mod: " VERSION, std::numeric_limits<int>::max(), font, 10.f,
+					game::R_AddCmdDrawText("iw7d: " VERSION, std::numeric_limits<int>::max(), font, 10.f,
 						5.f + static_cast<float>(font->pixelHeight), 1.f, 1.f, 0.0f, text_color, 0);
 #endif
 				}

@@ -32,6 +32,7 @@ local f0_local3 = function(f2_arg0, f2_arg1, f2_arg2)
         if f2_local0 then
             f2_arg0.CustomGameButton:SetButtonDisabled(f4_local0)
         end
+        f2_arg0.CustomMapsButton:SetButtonDisabled(f4_local0)
     end
 
     local f2_local3 = LUI.DataSourceInGlobalModel.new("frontEnd.lobby.areWeGameHost")
@@ -83,6 +84,10 @@ local f0_local3 = function(f2_arg0, f2_arg1, f2_arg2)
         end)
     end
 
+    f2_arg0.CustomMapsButton:addEventHandler("button_action", function(arg0, arg1)
+        LUI.FlowManager.RequestAddMenu("CustomMapsMenu", true, arg1.controller, false)
+    end)
+
     f2_arg0.ModsButton:addEventHandler("button_action", function(arg0, arg1)
         LUI.FlowManager.RequestAddMenu("ModSelectMenu", true, arg1.controller, false)
     end)
@@ -102,6 +107,11 @@ local f0_local3 = function(f2_arg0, f2_arg1, f2_arg2)
     end
     if f2_arg0.CustomGameButton then
         f0_local2(f2_arg0.CustomGameButton, f2_local5, f2_local6)
+    else
+        f2_local6 = f2_local6 + 1
+    end
+    if f2_arg0.CustomMapsButton then
+        f0_local2(f2_arg0.CustomMapsButton, f2_local5, f2_local6)
     else
         f2_local6 = f2_local6 + 1
     end
@@ -125,7 +135,7 @@ end
 
 function MPMainMenuButtons(menu, controller)
     local self = LUI.UIVerticalNavigator.new()
-    self:SetAnchorsAndPosition(0, 1, 0, 1, 0, 500 * _1080p, 0, 190 * _1080p)
+    self:SetAnchorsAndPosition(0, 1, 0, 1, 0, 500 * _1080p, 0, 230 * _1080p)
     self.id = "MPMainMenuButtons"
     local controllerIndex = controller and controller.controllerIndex
     if not controllerIndex and not Engine.InFrontend() then
@@ -176,6 +186,18 @@ function MPMainMenuButtons(menu, controller)
     self:addElement(CustomGameButton)
     self.CustomGameButton = CustomGameButton
 
+    local CustomMapsButton = nil
+
+    CustomMapsButton = MenuBuilder.BuildRegisteredType("MenuButton", {
+        controllerIndex = controllerIndex
+    })
+    CustomMapsButton.id = "CustomMapsButton"
+    CustomMapsButton.buttonDescription = "Browse and play custom maps"
+    CustomMapsButton.Text:setText(ToUpperCase("Custom Maps"), 0)
+    CustomMapsButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 500, _1080p * 120, _1080p * 150)
+    self:addElement(CustomMapsButton)
+    self.CustomMapsButton = CustomMapsButton
+
     local ModsButton = nil
 
     ModsButton = MenuBuilder.BuildRegisteredType("MenuButton", {
@@ -184,7 +206,7 @@ function MPMainMenuButtons(menu, controller)
     ModsButton.id = "ModsButton"
     ModsButton.buttonDescription = Engine.Localize("LUA_MENU_MODS_DESC")
     ModsButton.Text:setText(ToUpperCase(Engine.Localize("LUA_MENU_MODS_CAPS")), 0)
-    ModsButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 500, _1080p * 120, _1080p * 150)
+    ModsButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 500, _1080p * 160, _1080p * 190)
     self:addElement(ModsButton)
     self.ModsButton = ModsButton
 
@@ -196,7 +218,7 @@ function MPMainMenuButtons(menu, controller)
         StoreButton.id = "StoreButton"
         StoreButton.buttonDescription = Engine.Localize("LUA_MENU_STORE_DESC")
         StoreButton.Text:setText(Engine.Localize("LUA_MENU_STORE_CAPS"), 0)
-        StoreButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 500, _1080p * 160, _1080p * 190)
+        StoreButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 500, _1080p * 200, _1080p * 230)
         self:addElement(StoreButton)
         self.StoreButton = StoreButton
     end

@@ -559,7 +559,9 @@ namespace updater
 		{
 			delete_old_file();
 
-			if (utils::flags::has_flag("noupdate"))
+			// The update server only serves stock IW7-Mod. Syncing against it would replace the
+			// iw7d scripts (and delete anything extra) in the cdata folder, so it is opt-in via -update.
+			if (utils::flags::has_flag("noupdate") || !utils::flags::has_flag("update"))
 			{
 				return;
 			}

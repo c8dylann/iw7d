@@ -191,7 +191,7 @@ namespace steam_proxy
 
 			try
 			{
-				switch (const auto res = start_mod("\xF0\x9F\x8C\xA0" "IW7-Mod", steam::SteamUtils()->GetAppID()))
+				switch (const auto res = start_mod("\xF0\x9F\x8C\xA0" "IW7D", steam::SteamUtils()->GetAppID()))
 				{
 				case ownership_state::nosteam:
 					throw std::runtime_error("Steam must be running to play this game!");

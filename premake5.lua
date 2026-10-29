@@ -254,7 +254,7 @@ editandcontinue "Off"
 warnings "Extra"
 characterset "ASCII"
 
-defines {'BUILD_NAME="IW7"'}
+defines {'BUILD_NAME="IW7D"'}
 
 if _OPTIONS["steam-overlay"] then
     defines "LOAD_STEAM_OVERLAY"

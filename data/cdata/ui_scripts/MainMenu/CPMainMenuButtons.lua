@@ -45,6 +45,7 @@ local f0_local4 = function(arg0, arg1, arg2)
         local f7_local0 = f5_local2()
         arg0.PublicMatch:SetButtonDisabled(f7_local0)
         arg0.CustomMatch:SetButtonDisabled(f7_local0)
+        arg0.CustomMapsButton:SetButtonDisabled(f7_local0)
     end
 
     arg0:SubscribeToModel(f5_local0:GetModel(arg1), f5_local3)
@@ -76,11 +77,15 @@ local f0_local4 = function(arg0, arg1, arg2)
     arg0.ModsButton:addEventHandler("button_action", function(arg0, arg1)
         LUI.FlowManager.RequestAddMenu("ModSelectMenu", true, arg1.controller, false)
     end)
+
+    arg0.CustomMapsButton:addEventHandler("button_action", function(arg0, arg1)
+        LUI.FlowManager.RequestAddMenu("CustomMapsMenu", true, arg1.controller, false)
+    end)
 end
 
 function CPMainMenuButtons(menu, controller)
     local VNavigator = LUI.UIVerticalNavigator.new()
-    VNavigator:SetAnchorsAndPosition(0, 1, 0, 1, 0, 500 * _1080p, 0, 400 * _1080p)
+    VNavigator:SetAnchorsAndPosition(0, 1, 0, 1, 0, 500 * _1080p, 0, 440 * _1080p)
     VNavigator.id = "CPMainMenuButtons"
     local controllerIndex = controller and controller.controllerIndex
     if not controllerIndex and not Engine.InFrontend() then
@@ -96,7 +101,7 @@ function CPMainMenuButtons(menu, controller)
     ButtonDescription.id = "ButtonDescription"
     ButtonDescription:SetRGBFromTable(SWATCHES.genericButton.textDisabled, 0)
     ButtonDescription.Description:SetRight(_1080p * 415, 0)
-    ButtonDescription:SetAnchorsAndPosition(0, 0, 0, 1, 0, 0, _1080p * 336, _1080p * 394)
+    ButtonDescription:SetAnchorsAndPosition(0, 0, 0, 1, 0, 0, _1080p * 376, _1080p * 434)
     VNavigator:addElement(ButtonDescription)
     VNavigator.ButtonDescription = ButtonDescription
 
@@ -184,13 +189,25 @@ function CPMainMenuButtons(menu, controller)
     VNavigator:addElement(ModsButton)
     VNavigator.ModsButton = ModsButton
 
+    local CustomMapsButton = nil
+
+    CustomMapsButton = MenuBuilder.BuildRegisteredType("MenuButton", {
+        controllerIndex = controllerIndex
+    })
+    CustomMapsButton.id = "CustomMapsButton"
+    CustomMapsButton.buttonDescription = "Browse and play custom maps"
+    CustomMapsButton.Text:setText(ToUpperCase("Custom Maps"), 0)
+    CustomMapsButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 340, _1080p * 280, _1080p * 310)
+    VNavigator:addElement(CustomMapsButton)
+    VNavigator.CustomMapsButton = CustomMapsButton
+
     local ContractsButton = nil
 
     ContractsButton = MenuBuilder.BuildRegisteredType("ContractsButtonCP", {
         controllerIndex = controllerIndex
     })
     ContractsButton.id = "ContractsButton"
-    ContractsButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 340, _1080p * 280, _1080p * 340)
+    ContractsButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 340, _1080p * 320, _1080p * 380)
     VNavigator:addElement(ContractsButton)
     VNavigator.ContractsButton = ContractsButton
 

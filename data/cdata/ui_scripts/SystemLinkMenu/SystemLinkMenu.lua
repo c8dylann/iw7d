@@ -160,7 +160,7 @@ MenuBuilder.m_types["SystemLinkMenu"] = function(menu, controller)
         MenuTitle = MenuBuilder.BuildRegisteredType("MenuTitle", {
             controllerIndex = controllerIndex
         })
-        MenuTitle.MenuBreadcrumbs:setText(ToUpperCase(Engine.Localize("LUA_MENU_BREADCRUMB_2_ITEMS", "IW7-Mod",
+        MenuTitle.MenuBreadcrumbs:setText(ToUpperCase(Engine.Localize("LUA_MENU_BREADCRUMB_2_ITEMS", "IW7D",
             "MULTIPLAYER")), 0)
         MenuTitle.Icon:SetTop(_1080p * -28.5, 0)
         MenuTitle.Icon:SetBottom(_1080p * 61.5, 0)

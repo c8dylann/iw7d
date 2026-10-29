@@ -251,9 +251,7 @@ local PostLoadFunc = function(menu, controllerIndex, controller)
         adjustButtonDescription()
     end
 
-    if not CODTV.IsCODTVEnabled() then
-        adjustButtonDescription()
-    end
+    -- the slot freed by CODTV is taken by the Custom Maps button, so the description does not move up for it
 
     if not CONDITIONS.IsStoreAllowed(menu) then
         adjustButtonDescription()
