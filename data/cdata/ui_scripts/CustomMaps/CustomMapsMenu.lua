@@ -1,17 +1,13 @@
 local mapListPath = "frontEnd.CustomMaps"
 
--- Entries shown until a real map is installed in usermaps/<ref>/.
--- Once usermaps/<ref>/<ref>.ff exists the real map replaces the placeholder.
-local placeholderMaps = {
-    {
-        ref = "mp_testmap",
-        name = "TEST MAP",
-        desc = "Placeholder map. Copy your map into usermaps/mp_testmap/ (mp_testmap.ff and mp_testmap.arena) to play it from here."
-    },
+-- Built-in test entries. They are aliases: selecting one starts the stock map named by
+-- `alias`. Once usermaps/<ref>/<ref>.ff exists, the real map replaces the alias entry.
+local aliasMaps = {
     {
         ref = "cp_testmap",
         name = "TEST MAP",
-        desc = "Placeholder zombies map. Copy your map into usermaps/cp_testmap/ (cp_testmap.ff and cp_testmap.arena) to play it from here."
+        alias = "cp_town",
+        desc = "Test entry, not a real custom map. It starts the stock cp_town map so the menu can be tested. Install a map in usermaps/cp_testmap/ (cp_testmap.ff and cp_testmap.arena) to replace it."
     }
 }
 
@@ -56,12 +52,13 @@ local function getCustomMaps()
         end
     end
 
-    for _, placeholder in ipairs(placeholderMaps) do
-        if not seen[placeholder.ref] and isAliensMap(placeholder.ref) == aliens then
+    for _, aliasMap in ipairs(aliasMaps) do
+        if not seen[aliasMap.ref] and isAliensMap(aliasMap.ref) == aliens then
             maps[#maps + 1] = {
-                ref = placeholder.ref,
-                name = placeholder.name,
-                desc = placeholder.desc,
+                ref = aliasMap.ref,
+                name = aliasMap.name,
+                desc = aliasMap.desc,
+                alias = aliasMap.alias,
                 installed = false
             }
         end
@@ -81,16 +78,18 @@ end
 local function setMapInfo(menuElement, map)
     menuElement.MapInfoTitle:setText(map.name)
     menuElement.MapInfoText:setText(map.desc)
-    if map.installed then
-        setStatus(menuElement, "")
+    if map.alias then
+        setStatus(menuElement, "^3Test entry^7: starts " .. map.alias)
     else
-        setStatus(menuElement, "^3Placeholder^7: no map files installed")
+        setStatus(menuElement, "")
     end
 end
 
 local function startMap(menuElement, map)
-    if not map.installed then
-        setStatus(menuElement, "^3Placeholder^7: add " .. map.ref .. ".ff to usermaps/" .. map.ref .. "/")
+    local target = map.alias or map.ref
+
+    if map.alias and not io.zoneexists(target) then
+        setStatus(menuElement, "^1" .. target .. " is not installed")
         return
     end
 
@@ -99,7 +98,7 @@ local function startMap(menuElement, map)
         return
     end
 
-    Engine.Exec("map " .. map.ref)
+    Engine.Exec("map " .. target)
 end
 
 local function leaveMenu(menuElement, controllerIndex)
@@ -131,6 +130,8 @@ local function populateMapList(menuElement, controllerIndex)
 
     if #maps > 0 then
         setMapInfo(menuElement, maps[1])
+    else
+        setStatus(menuElement, "No custom maps found in usermaps/")
     end
 end
 

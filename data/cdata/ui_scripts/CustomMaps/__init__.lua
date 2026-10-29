@@ -3,3 +3,4 @@ if not Engine.InFrontend() then
 end
 
 require("CustomMapsMenu")
+require("ZombiesLobby")
