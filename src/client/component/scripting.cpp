@@ -104,11 +104,15 @@ namespace scripting
 			if (!script_function_table_sort.contains(filename))
 			{
 				const auto script = gsc::find_script(game::ASSET_TYPE_SCRIPTFILE, current_script_file.data(), false);
-				if (script)
+				if (!script)
 				{
-					const auto end = &script->bytecode[script->bytecodeLen];
-					script_function_table_sort[filename].emplace_back("__end__", end);
+					// a script that is neither an asset nor one of ours (another tool linked it into the engine itself):
+					// without its end there is nothing to sort against, and inserting before end() of an empty list crashed
+					return;
 				}
+
+				const auto end = &script->bytecode[script->bytecodeLen];
+				script_function_table_sort[filename].emplace_back("__end__", end);
 			}
 
 			const auto name = scripting::get_token(id);
