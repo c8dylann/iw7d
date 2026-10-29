@@ -32,7 +32,7 @@ end
 
 local LobbyMissionButtons = function(menu, controller)
 	local self = LUI.UIVerticalNavigator.new()
-	self:SetAnchorsAndPosition(0, 1, 0, 1, 0, 600 * _1080p, 0, 643 * _1080p)
+	self:SetAnchorsAndPosition(0, 1, 0, 1, 0, 600 * _1080p, 0, 683 * _1080p)
 	self.id = "LobbyMissionButtons"
 
 	local controller_index = controller and controller.controllerIndex
@@ -45,7 +45,7 @@ local LobbyMissionButtons = function(menu, controller)
 		controllerIndex = controller_index,
 	})
 	LobbyMissionVerticalLayout.id = "LobbyMissionVerticalLayout"
-	LobbyMissionVerticalLayout:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 600, 0, _1080p * 564)
+	LobbyMissionVerticalLayout:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 600, 0, _1080p * 604)
 	self:addElement(LobbyMissionVerticalLayout)
 	self.LobbyMissionVerticalLayout = LobbyMissionVerticalLayout
 
@@ -80,6 +80,19 @@ local LobbyMissionButtons = function(menu, controller)
 		})
 	end)
 
+	local CustomMapsButton = MenuBuilder.BuildRegisteredType("GenericButton", {
+		controllerIndex = controller_index,
+	})
+	CustomMapsButton.id = "CustomMapsButton"
+	CustomMapsButton.Text:setText(ToUpperCase("Custom Maps"), 0)
+	CustomMapsButton.buttonDescription = "Browse and play custom maps"
+	CustomMapsButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 500, _1080p * 40, _1080p * 70)
+	LUI.UIElement.addElementBefore(CustomMapsButton, LobbyMissionVerticalLayout:getChildById("CAC"))
+	LobbyMissionVerticalLayout.CustomMapsButton = CustomMapsButton
+	CustomMapsButton:addEventHandler("button_action", function(f15_arg0, f15_arg1)
+		LUI.FlowManager.RequestAddMenu("CustomMapsMenu", true, f15_arg1.controller, false)
+	end)
+
 	set_matchmaking_dvars()
 	SyncCombatTrainingMatchRules()
 
@@ -92,7 +105,7 @@ local LobbyMissionButtons = function(menu, controller)
 		controllerIndex = controller_index,
 	})
 	CRMMain.id = "CRMMain"
-	CRMMain:SetAnchorsAndPosition(0, 1, 0, 1, _1080p * 6, _1080p * 317, _1080p * 529, _1080p * 723)
+	CRMMain:SetAnchorsAndPosition(0, 1, 0, 1, _1080p * 6, _1080p * 317, _1080p * 569, _1080p * 763)
 	self:addElement(CRMMain)
 	self.CRMMain = CRMMain
 

@@ -94,7 +94,7 @@ end
 
 local GameSetupButtonsSubMenu = function(menu, controller)
 	local self = LUI.UIVerticalList.new()
-	self:SetAnchorsAndPosition(0, 1, 0, 1, 0, 600 * _1080p, 0, 190 * _1080p)
+	self:SetAnchorsAndPosition(0, 1, 0, 1, 0, 600 * _1080p, 0, 230 * _1080p)
 	self.id = "GameSetupButtonsSubMenu"
 	local rootController = controller and controller.controllerIndex
 	if not rootController and not Engine.InFrontend() then
@@ -115,6 +115,16 @@ local GameSetupButtonsSubMenu = function(menu, controller)
 	self:addElement(MapsButton)
 	self.MapsButton = MapsButton
 
+	local CustomMapsButton = MenuBuilder.BuildRegisteredType("GenericButton", {
+		controllerIndex = rootController,
+	})
+	CustomMapsButton.id = "CustomMapsButton"
+	CustomMapsButton.buttonDescription = "Browse and play custom maps"
+	CustomMapsButton.Text:setText(ToUpperCase("Custom Maps"), 0)
+	CustomMapsButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 600, _1080p * 40, _1080p * 70)
+	self:addElement(CustomMapsButton)
+	self.CustomMapsButton = CustomMapsButton
+
 	local ModesButton = MenuBuilder.BuildRegisteredType("GenericDualLabelButton", {
 		controllerIndex = rootController,
 	})
@@ -122,7 +132,7 @@ local GameSetupButtonsSubMenu = function(menu, controller)
 	ModesButton.buttonDescription = Engine.Localize("LUA_MENU_DESC_GAMEMODE")
 	ModesButton.Text:setText(ToUpperCase(Engine.Localize("LUA_MENU_MODE_CAPS")), 0)
 	ModesButton.DynamicText:setText("", 0)
-	ModesButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 600, _1080p * 40, _1080p * 70)
+	ModesButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 600, _1080p * 80, _1080p * 110)
 	self:addElement(ModesButton)
 	self.ModesButton = ModesButton
 
@@ -133,7 +143,7 @@ local GameSetupButtonsSubMenu = function(menu, controller)
 	OptionsButton.buttonDescription = Engine.Localize("LUA_MENU_DESC_OPTIONS")
 	OptionsButton.Text:setText(ToUpperCase(Engine.Localize("MENU_CHANGE_GAME_RULES_CAPS")), 0)
 	OptionsButton.DynamicText:setText("", 0)
-	OptionsButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 600, _1080p * 80, _1080p * 110)
+	OptionsButton:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 600, _1080p * 120, _1080p * 150)
 	self:addElement(OptionsButton)
 	self.OptionsButton = OptionsButton
 
@@ -143,7 +153,7 @@ local GameSetupButtonsSubMenu = function(menu, controller)
 	BotSetup.id = "BotSetup"
 	BotSetup.buttonDescription = Engine.Localize("LUA_MENU_DESC_BOTS")
 	BotSetup.Text:setText(Engine.Localize("LUA_MENU_BOT_SETUP_CAPS"), 0)
-	BotSetup:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 600, _1080p * 120, _1080p * 150)
+	BotSetup:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 600, _1080p * 160, _1080p * 190)
 	self:addElement(BotSetup)
 	self.BotSetup = BotSetup
 
@@ -151,12 +161,15 @@ local GameSetupButtonsSubMenu = function(menu, controller)
 		controllerIndex = rootController,
 	})
 	ButtonDescription.id = "ButtonDescription"
-	ButtonDescription:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 600, _1080p * 160, _1080p * 200)
+	ButtonDescription:SetAnchorsAndPosition(0, 1, 0, 1, 0, _1080p * 600, _1080p * 200, _1080p * 240)
 	self:addElement(ButtonDescription)
 	self.ButtonDescription = ButtonDescription
 
 	MapsButton:addEventHandler("button_action", function(f4_arg0, f4_arg1)
 		ACTIONS.OpenMenu("Maps", true, f4_arg1.controller or rootController)
+	end)
+	CustomMapsButton:addEventHandler("button_action", function(f4_arg0, f4_arg1)
+		ACTIONS.OpenMenu("CustomMapsMenu", true, f4_arg1.controller or rootController)
 	end)
 	ModesButton:addEventHandler("button_action", function(f5_arg0, f5_arg1)
 		SyncCombatTrainingMatchRules()
@@ -215,7 +228,7 @@ local CombatTrainingGameSetup = function(menu, controller)
 		controllerIndex = rootController,
 	})
 	GameSetupButtons.id = "GameSetupButtonsSubMenu"
-	GameSetupButtons:SetAnchorsAndPosition(0, 1, 0, 1, _1080p * 130, _1080p * 630, _1080p * 216, _1080p * 406)
+	GameSetupButtons:SetAnchorsAndPosition(0, 1, 0, 1, _1080p * 130, _1080p * 630, _1080p * 216, _1080p * 446)
 	self:addElement(GameSetupButtons)
 	self.GameSetupButtons = GameSetupButtons
 

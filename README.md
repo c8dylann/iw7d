@@ -18,7 +18,7 @@ IW7-Mod is a client for Call of Duty®: Infinite Warfare that adds dedicated ser
 
 IW7D is a fork of [IW7-Mod](https://github.com/auroramod/iw7-mod). On top of upstream it adds:
 
-- **Custom Maps menu** - a `CUSTOM MAPS` button on the multiplayer and zombies main menus. It lists every map installed in `usermaps/<name>/<name>.ff` for the current mode, plus a placeholder `TEST MAP` until a real map is installed. Selecting an installed map starts it with the `map` command. Add an optional `usermaps/<name>/desc.txt` for the description shown next to the list.
+- **Custom Maps menu** - a `CUSTOM MAPS` button on the lobby screen and in the lobby's Game Setup screen, under `MAPS`. It lists every map installed in `usermaps/<name>/<name>.ff` for the current mode, plus a placeholder `TEST MAP` until a real map is installed. Selecting an installed map starts it with the `map` command. Add an optional `usermaps/<name>/desc.txt` for the description shown next to the list.
 - **IW7D branding** in the in-game text, console and window titles.
 - **The updater is opt-in.** The official update server only serves stock IW7-Mod and would overwrite the IW7D scripts, so nothing is downloaded unless you start the game with `-update`.
 
